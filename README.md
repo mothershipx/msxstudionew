@@ -51,6 +51,18 @@ pnpm dev
 
 This starts the MSX board at `http://localhost:3100`.
 
+## Recreate the OpenClaw fleet
+
+The repo does not contain the actual `157` agents. MSX mirrors whatever OpenClaw fleet exists on the local machine.
+
+Once OpenClaw and the local fleet are present, run:
+
+```bash
+pnpm bootstrap:openclaw-fleet
+```
+
+See [doc/FLEET_SETUP.md](./doc/FLEET_SETUP.md) for the full handoff and setup flow.
+
 ## Useful commands
 
 ```bash
@@ -62,6 +74,7 @@ pnpm typecheck
 pnpm test:run
 pnpm msx onboard --yes
 pnpm msx auth bootstrap-ceo
+pnpm bootstrap:openclaw-fleet
 pnpm msx company import <github-url-or-folder>
 pnpm msx company export <company-id>
 pnpm sync:openclaw-fleet

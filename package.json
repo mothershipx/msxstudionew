@@ -24,6 +24,7 @@
     "release:stable": "./scripts/release.sh stable",
     "release:github": "./scripts/create-github-release.sh",
     "release:rollback": "./scripts/rollback-latest.sh",
+    "bootstrap:openclaw-fleet": "node scripts/bootstrap-openclaw-fleet.mjs",
     "sync:openclaw-fleet": "node scripts/sync-openclaw-fleet.mjs",
     "check:tokens": "node scripts/check-forbidden-tokens.mjs",
     "docs:dev": "cd docs && npx mintlify dev",

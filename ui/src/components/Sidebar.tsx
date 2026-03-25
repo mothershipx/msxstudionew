@@ -61,7 +61,7 @@ export function Sidebar() {
           />
         )}
         <span className="flex-1 text-sm font-bold text-foreground truncate pl-1">
-          {selectedCompany?.name ?? "Select environment"}
+          {selectedCompany?.name ? `MSX Studio · ${selectedCompany.name}` : "MSX Studio"}
         </span>
         <Button
           variant="ghost"

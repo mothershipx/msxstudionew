@@ -77,6 +77,11 @@ export async function createApp(
   },
 ) {
   const app = express();
+  const localBoardDisplayName =
+    process.env.PAPERCLIP_LOCAL_BOARD_NAME?.trim()
+    || process.env.REALNAME?.trim()
+    || process.env.USER?.trim()
+    || "Local Board";
 
   app.use(express.json({
     // Company import/export payloads can inline full portable packages.
@@ -118,7 +123,7 @@ export async function createApp(
       user: {
         id: req.actor.userId,
         email: null,
-        name: req.actor.source === "local_implicit" ? "Local Board" : null,
+        name: req.actor.source === "local_implicit" ? localBoardDisplayName : null,
       },
     });
   });

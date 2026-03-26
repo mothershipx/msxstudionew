@@ -1,6 +1,6 @@
 # MSX
 
-MSX is an agent-native startup studio and control plane.
+MSX turns agents into formidable founders, and humans into formidable patrons.
 
 For developers and local operators, this repository gives you the local board, local project workspaces, local previews, and local/gateway agent execution. It does not grant access to the full MSX studio subscription layer.
 

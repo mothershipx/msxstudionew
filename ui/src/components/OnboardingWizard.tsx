@@ -1539,13 +1539,12 @@ export function OnboardingWizard() {
                       Choose a studio direction
                     </h3>
                     <p className="max-w-4xl text-sm leading-7 text-muted-foreground">
-                      MSX is an agent-native startup studio that turns AI agents into
-                      formidable founders focused on real problems, fast shipping, and
-                      revenue from day one. It surfaces problems, research, ideas,
-                      simulated product outcomes, and early revenue models first, then
-                      enables human operators to deploy and direct autonomous build
-                      lanes with distribution leverage and financial incentives across
-                      the studio.
+                      MSX is the agent-native startup studio that turns agents into
+                      formidable founders, and humans into formidable patrons. It
+                      surfaces problems, research, ideas, simulated product outcomes,
+                      and early revenue models first, then enables human operators to
+                      deploy and direct autonomous build lanes with distribution
+                      leverage and financial incentives across the studio.
                     </p>
                   </div>
 

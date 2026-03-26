@@ -74,7 +74,11 @@ type StudioOpportunitySource =
   | "market_signal"
   | "raw_idea"
   | "validated_outcome";
-type StudioFeedFilter = StudioOpportunitySource | "all";
+type StudioBuildMode =
+  | "market_driven"
+  | "product_driven"
+  | "api_driven";
+type StudioFeedFilter = StudioBuildMode | "all";
 type StudioIndustry =
   | "all"
   | "care"
@@ -104,6 +108,7 @@ type StudioSwarmUpdate = {
 type StudioOpportunity = {
   id: string;
   source: StudioOpportunitySource;
+  buildMode: StudioBuildMode;
   industry: Exclude<StudioIndustry, "all">;
   title: string;
   tagline: string;
@@ -134,6 +139,7 @@ const STUDIO_OPPORTUNITIES: StudioOpportunity[] = [
   {
     id: "elder-memory-mobile",
     source: "validated_outcome",
+    buildMode: "product_driven",
     industry: "care",
     title: "Elder Memory Mobile",
     tagline: "Calm memory support for elders and caregivers.",
@@ -192,6 +198,7 @@ const STUDIO_OPPORTUNITIES: StudioOpportunity[] = [
   {
     id: "trend-to-product-engine",
     source: "market_signal",
+    buildMode: "market_driven",
     industry: "creator",
     title: "Trend-to-Product Engine",
     tagline: "Ship products directly from trend velocity.",
@@ -249,6 +256,7 @@ const STUDIO_OPPORTUNITIES: StudioOpportunity[] = [
   {
     id: "local-lead-studio",
     source: "raw_idea",
+    buildMode: "product_driven",
     industry: "local_smb",
     title: "Local Lead Studio",
     tagline: "Fix missed inbound leads for neglected local SMBs.",
@@ -306,6 +314,7 @@ const STUDIO_OPPORTUNITIES: StudioOpportunity[] = [
   {
     id: "storefront-concierge",
     source: "validated_outcome",
+    buildMode: "product_driven",
     industry: "commerce",
     title: "Storefront Concierge",
     tagline: "Turn abandoned browse traffic into guided checkout.",
@@ -363,6 +372,7 @@ const STUDIO_OPPORTUNITIES: StudioOpportunity[] = [
   {
     id: "compliance-hotline-copilot",
     source: "market_signal",
+    buildMode: "market_driven",
     industry: "ops",
     title: "Compliance Hotline Copilot",
     tagline: "Resolve repetitive compliance ops before they become tickets.",
@@ -420,6 +430,7 @@ const STUDIO_OPPORTUNITIES: StudioOpportunity[] = [
   {
     id: "invoice-cashflow-companion",
     source: "raw_idea",
+    buildMode: "product_driven",
     industry: "fintech",
     title: "Invoice Cashflow Companion",
     tagline: "Give small teams a calmer weekly cashflow control room.",
@@ -469,6 +480,64 @@ const STUDIO_OPPORTUNITIES: StudioOpportunity[] = [
       {
         agent: "paid-social-strategist",
         action: "lining up the first CAC experiment for finance operators",
+        eta: "ready",
+        status: "ready"
+      }
+    ]
+  },
+  {
+    id: "listing-graph-sim",
+    source: "raw_idea",
+    buildMode: "api_driven",
+    industry: "commerce",
+    title: "Listing Graph Sim",
+    tagline: "Unbundle a Zillow-like experience into an API-native simulation layer.",
+    summary:
+      "A simulated property discovery and pricing workflow built by reverse-engineering public product behavior, browsing flows, and endpoint patterns instead of relying on official platform access.",
+    signal: "High-intent real-estate discovery, listing data demand, and repeated user frustration with closed workflows",
+    companyName: "Listing Graph Sim",
+    goal:
+      "Build an API-driven property discovery company that simulates the core Zillow-like game loop, ships fast, and monetizes from day one through premium access and lead packages.",
+    budgetUsd: "1350",
+    initialTaskTitle: "Activate the first API-driven listing simulation MVP",
+    recommendedTemplateId: "ops-systems-pod",
+    proofPoints: [
+      "Users already understand the category and the workflow instantly.",
+      "A simulated version can validate demand before deep infrastructure spend.",
+      "Endpoint research and unbundled UX create a clear technical moat."
+    ],
+    metrics: [
+      { label: "Industry", value: "Proptech + API products" },
+      { label: "First revenue", value: "Premium search and lead access" },
+      { label: "Launch path", value: "Web simulation console" }
+    ],
+    sourceInsights: [
+      { label: "Reverse-engineering plan", value: "Map browse flows, observe network behavior, and model reusable endpoint patterns" },
+      { label: "API leverage", value: "Blend public data, enrichment APIs, and simulated listing intelligence into one surface" },
+      { label: "Simulated 12-mo revenue", value: "$320k ARR from premium buyer tools and broker lead packages" },
+    ],
+    swarmUpdates: [
+      {
+        agent: "api-scout",
+        action: "mapping public product flows and candidate endpoint surfaces",
+        eta: "live now",
+        status: "live"
+      },
+      {
+        agent: "backend-builder",
+        action: "shaping a simulated listing graph and valuation service",
+        eta: "4 min",
+        status: "queued"
+      },
+      {
+        agent: "frontend-developer",
+        action: "assembling a Zillow-like browse and compare interface",
+        eta: "6 min",
+        status: "queued"
+      },
+      {
+        agent: "growth-operator",
+        action: "testing premium access and broker-facing monetization angles",
         eta: "ready",
         status: "ready"
       }
@@ -534,10 +603,10 @@ const STUDIO_FEED_FILTERS: Array<{
   id: StudioFeedFilter;
   label: string;
 }> = [
-  { id: "all", label: "All lanes" },
-  { id: "validated_outcome", label: "Validated outcomes" },
-  { id: "raw_idea", label: "Raw ideas" },
-  { id: "market_signal", label: "Market signals" },
+  { id: "all", label: "All modes" },
+  { id: "market_driven", label: "Market-driven" },
+  { id: "product_driven", label: "Product-driven" },
+  { id: "api_driven", label: "API-driven" },
 ];
 
 const DEFAULT_STUDIO_OPPORTUNITY = STUDIO_OPPORTUNITIES[0];
@@ -554,6 +623,22 @@ function sourceLabel(source: StudioOpportunitySource) {
   return "Validated outcome";
 }
 
+function buildModeLabel(mode: StudioBuildMode) {
+  if (mode === "market_driven") return "Market-driven";
+  if (mode === "product_driven") return "Product-driven";
+  return "API-driven";
+}
+
+function buildModeDescription(mode: StudioBuildMode) {
+  if (mode === "market_driven") {
+    return "Start from live demand signals, audience pull, and market urgency.";
+  }
+  if (mode === "product_driven") {
+    return "Start from a structured product concept, wedge, or validated product outcome.";
+  }
+  return "Start from a human-supplied API idea, reverse-engineered workflows, and leverageable endpoint patterns.";
+}
+
 function industryLabel(industry: Exclude<StudioIndustry, "all">) {
   return (
     STUDIO_INDUSTRY_OPTIONS.find((entry) => entry.id === industry)?.label ??
@@ -565,9 +650,12 @@ function opportunityMetricValue(opportunity: StudioOpportunity, label: string) {
   return opportunity.metrics.find((metric) => metric.label === label)?.value ?? null;
 }
 
-function sourceInsightHeading(source: StudioOpportunitySource) {
-  if (source === "market_signal") return "Channel and signal metrics";
-  if (source === "raw_idea") return "Structured idea frame";
+function sourceInsightHeading(opportunity: StudioOpportunity) {
+  if (opportunity.buildMode === "api_driven") {
+    return "API reverse-engineering frame";
+  }
+  if (opportunity.source === "market_signal") return "Channel and signal metrics";
+  if (opportunity.source === "raw_idea") return "Structured idea frame";
   return "Preliminary outcome model";
 }
 
@@ -599,6 +687,7 @@ function buildActivationTaskDescription(input: {
   return [
     `You are activating ${input.companyName} inside the MSX startup studio.`,
     "",
+    `Build path: ${buildModeLabel(input.opportunity.buildMode)}.`,
     `Studio source: ${sourceLabel(input.opportunity.source)}.`,
     `Opportunity: ${input.opportunity.title}.`,
     `Signal cluster: ${input.opportunity.signal}.`,
@@ -745,7 +834,7 @@ export function OnboardingWizard() {
       if (selectedIndustry !== "all" && entry.industry !== selectedIndustry) {
         return false;
       }
-      if (selectedFeedFilter !== "all" && entry.source !== selectedFeedFilter) {
+  if (selectedFeedFilter !== "all" && entry.buildMode !== selectedFeedFilter) {
         return false;
       }
       return true;
@@ -1546,6 +1635,12 @@ export function OnboardingWizard() {
                       deploy and direct autonomous build lanes with distribution
                       leverage and financial incentives across the studio.
                     </p>
+                    <p className="max-w-4xl text-xs leading-6 text-muted-foreground/85">
+                      A company can start from live market demand, from a product
+                      concept that a human wants to pursue, or from an API-driven
+                      idea built by studying public product behavior, unbundling
+                      workflows, and simulating the core experience fast.
+                    </p>
                   </div>
 
                   <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
@@ -1612,10 +1707,12 @@ export function OnboardingWizard() {
                           Studio queue
                         </div>
                         <h4 className="mt-1 text-base font-medium">
-                          Select the product, idea, or signal to activate now
+                          Select the market-driven, product-driven, or API-driven company to activate now
                         </h4>
                         <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                          Pick one direction explicitly. The rest stay in the queue for later review.
+                          Pick one direction explicitly. The queue can start from
+                          market demand, a product idea, or a custom API-driven
+                          concept supplied by the human operator.
                         </p>
                       </div>
                       <ChevronDown
@@ -1642,9 +1739,14 @@ export function OnboardingWizard() {
                               )}
                             >
                               <div className="flex items-center justify-between gap-2">
-                                <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                                  {sourceLabel(opportunity.source)}
-                                </span>
+                                <div className="flex flex-wrap items-center gap-1.5">
+                                  <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                                    {buildModeLabel(opportunity.buildMode)}
+                                  </span>
+                                  <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">
+                                    {sourceLabel(opportunity.source)}
+                                  </span>
+                                </div>
                                 <span
                                   className={cn(
                                     "rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.18em]",
@@ -1662,6 +1764,9 @@ export function OnboardingWizard() {
                               <div className="mt-1 text-xs text-muted-foreground">
                                 {opportunity.tagline}
                               </div>
+                              <div className="mt-3 text-[11px] leading-5 text-muted-foreground">
+                                {buildModeDescription(opportunity.buildMode)}
+                              </div>
                             </button>
                           );
                         })}
@@ -1677,6 +1782,9 @@ export function OnboardingWizard() {
                     >
                       <div className="space-y-3">
                         <div className="flex flex-wrap items-center gap-2">
+                          <span className="rounded-full border border-border bg-background/80 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                            {buildModeLabel(selectedOpportunity.buildMode)}
+                          </span>
                           <span className="rounded-full border border-border bg-background/80 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                             {sourceLabel(selectedOpportunity.source)}
                           </span>
@@ -1739,6 +1847,14 @@ export function OnboardingWizard() {
                             </p>
                             <div className="rounded-2xl border border-border bg-background/80 p-4">
                               <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                                Build path
+                              </div>
+                              <p className="mt-2 text-sm leading-6">
+                                {buildModeDescription(selectedOpportunity.buildMode)}
+                              </p>
+                            </div>
+                            <div className="rounded-2xl border border-border bg-background/80 p-4">
+                              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
                                 Signal cluster
                               </div>
                               <p className="mt-2 text-sm leading-6">
@@ -1747,7 +1863,7 @@ export function OnboardingWizard() {
                             </div>
                             <div className="rounded-2xl border border-border bg-background/80 p-4">
                               <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                                {sourceInsightHeading(selectedOpportunity.source)}
+                                {sourceInsightHeading(selectedOpportunity)}
                               </div>
                               <div className="mt-3 grid gap-2 sm:grid-cols-3">
                                 {selectedOpportunity.sourceInsights.map((insight) => (
@@ -1793,6 +1909,14 @@ export function OnboardingWizard() {
                                 idea, simulate the likely product outcome, and map the first
                                 revenue path before a human founder or team is brought in.
                               </p>
+                              {selectedOpportunity.buildMode === "api_driven" && (
+                                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                                  In API-driven lanes, that means a human can provide the
+                                  starting concept while MSX maps the behavior, endpoints,
+                                  reusable data flows, and monetizable wedge before the
+                                  first build pod is deployed.
+                                </p>
+                              )}
                             </div>
                           </div>
 
